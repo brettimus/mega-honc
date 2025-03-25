@@ -1,4 +1,3 @@
-import { instrument } from "@fiberplane/hono-otel";
 import { createFiberplane, createOpenAPISpec } from "@fiberplane/hono";
 import { drizzle } from "drizzle-orm/d1";
 import { Hono } from "hono";
@@ -37,9 +36,7 @@ app.post("/api/user", async (c) => {
  * As of writing, this is just the list of routes and their methods.
  */
 app.get("/openapi.json", c => {
-  // @ts-expect-error - @fiberplane/hono is in beta and still not typed correctly
   return c.json(createOpenAPISpec(app, {
-    openapi: "3.0.0",
     info: {
       title: "Honc D1 App",
       version: "1.0.0",
@@ -59,7 +56,3 @@ app.use("/fp/*", createFiberplane({
 
 
 export default app;
-
-// Export the instrumented app if you've wired up a Fiberplane-Hono-OpenTelemetry trace collector
-//
-// export default instrument(app);
